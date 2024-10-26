@@ -1,0 +1,2248 @@
+﻿AP BST
+
+
+#include<stdio.h>
+#include<stdlib.h>
+#include<malloc.h>
+
+
+struct Node
+{
+    int data;
+    struct Node*left;
+    struct Node*right;
+};
+
+
+struct Node* createNode(int data)
+{
+    struct Node*temp;
+    temp=malloc(sizeof(struct Node));
+    temp->data=data;
+    temp->left=NULL;
+    temp->right=NULL;
+
+
+    return temp;
+}
+
+
+struct Node*insert(struct Node*root,int data)
+{
+    if(root == NULL)
+    {
+        return createNode(data);
+    }
+    if(data<root->data)
+    {
+        root->left=insert(root->left,data);
+    }
+    else if(data>root->data)
+    {
+        root->right=insert(root->right,data);
+    }
+    return root;
+}
+
+
+struct Node*search(struct Node*root,int data)
+{
+    if(root == NULL || root->data == data)
+    {
+        return root;
+    }
+    if(data<root->data)
+    {
+        return search(root->left,data);
+    }
+    return search(root->right,data);
+}
+
+
+struct Node*findMin(struct Node*root)
+{
+    while(root && root->left != NULL)
+    {
+        root = root->left;
+    }
+    return root;
+}
+
+
+struct Node*deleteNode(struct Node*root,int data)
+{
+    if(root == NULL)
+    {
+        return root;
+    }
+    if(data<root->data)
+    {
+        root->left=deleteNode(root->left,data);
+    }
+    else if(data>root->data)
+    {
+        root->right=deleteNode(root->right,data);
+    }
+    else
+    {
+        if(root->left == NULL)
+        {
+            struct Node*temp1=root->right;
+            free(root);
+            return temp1;
+        }
+        else if(root->right == NULL)
+        {
+            struct Node*temp1=root->left;
+            free(root);
+            return temp1;
+        }
+        struct Node*temp1=findMin(root->right);
+        root->data=temp1->data;
+        root->right=deleteNode(root->right,temp1->data);
+    }
+    return root;
+}
+
+
+void inOrder(struct Node*root)
+{
+    if(root != NULL)
+    {
+        inOrder(root->left);
+        printf("%d",root->data);
+        inOrder(root->right);
+    }
+}
+
+
+void postorder(struct Node* root)
+{
+        if (root != NULL) 
+    {
+            postorder(root->left);        
+            postorder(root->right); 
+            printf("%d ", root->data);             
+        }
+}
+
+
+void preorder(struct Node* root)
+{
+        if (root != NULL) 
+    {
+            printf("%d ", root->data);
+            preorder(root->left);
+            preorder(root->right);
+        }
+}
+
+
+void main() 
+{
+    struct Node* root = NULL;
+    int ch, value;
+
+
+    while(1)
+    {
+        printf("\nBST OPERATION:\n");
+        printf("1. Insert\n");
+        printf("2. Search\n");
+        printf("3. Delete\n");
+        printf("4. Display Preorder\n");
+        printf("5. Display InOrder\n");
+        printf("6. Display PostOrder\n");
+        printf("7. Exit\n");
+        printf("Enter your choice: ");
+        scanf("%d", &ch);
+
+
+        switch (ch) 
+        {
+            case 1:
+                printf("Enter value to insert: ");
+                scanf("%d", &value);
+                root = insert(root, value);
+                printf("Value %d inserted.\n", value);
+                break;
+
+
+            case 2:
+                printf("Enter value to search: ");
+                scanf("%d", &value);
+                struct Node* foundNode = search(root, value);
+                if (foundNode) 
+                {
+                    printf("Value %d found in the BST.\n", foundNode->data);
+                } else 
+                {
+                    printf("Value %d not found in the BST.\n", value);
+                }
+                break;
+
+
+            case 3:
+                printf("Enter value to delete: ");
+                scanf("%d", &value);
+                root = deleteNode(root, value);
+                printf("Value %d deleted (if it existed).\n", value);
+                break;
+
+
+            case 4:
+                printf("BST Elments: ");
+                preorder(root);
+                printf("\n");
+                break;
+
+
+            case 5:
+                printf("BST Elements: ");
+                inOrder(root);
+                printf("\n");
+                break;
+
+
+            case 6:
+                printf("\nBST Element: ");
+                postorder(root);
+                printf("\n");
+                break;
+
+
+            case 7:
+                exit(0);
+                break;
+
+
+            default:
+                printf("Invalid choice. Please try again.\n");
+        }
+    } 
+}
+
+
+
+
+
+
+STACK
+
+
+#include<stdio.h>
+
+
+int stk[5];
+int top=-1;
+
+
+
+
+void push()
+{
+        int x;
+        if(top==4)
+        {
+                printf("\nStack Is Full\n");
+        }
+        else
+        {
+                printf("\nEnter The Value To Be Added:\n");
+                scanf("%d",&x);
+                top++;
+                stk[top]=x;
+                printf("%d Inserted Successully:\n",x);
+        }
+}
+
+
+void pop()
+{
+        int y;
+        if(top==-1)
+        {
+                printf("\nStack Is Empty\n");
+                return ;
+        }
+        else
+        {
+                y=stk[top];
+                top--;
+                printf("%d Deleted Successully:\n",y);
+        }
+}
+
+
+void peak()
+{
+        if(top==-1)
+        {
+                printf("\nStack Is Empty\n");
+                return ;
+        }
+        else
+        {
+                printf("\nThe Peak Value In Stack Is %d\n",stk[top]);
+        }
+}
+
+
+void display()
+{
+        if(top==-1)
+        {
+                printf("\nStack Is Empty\n");
+                return ;
+        }
+        else
+        {
+                printf("\nDisplaying The Values Present In Stack\n");
+                for(int i=0;i<=top;i++)
+                {
+                        printf("Stack[%d] = %d\n",i,stk[i]);
+                }
+        }
+}
+
+
+void main()
+{
+        int ch,a=0;
+        while(a==0)
+        {
+                printf("\nSTACK OPERATIONS\n");
+                printf("1.PUSH\n");
+                printf("2.POP\n");
+                printf("3.PEAK\n");
+                printf("4.DISPLAY\n");
+                printf("5.EXIT\n");
+                printf("\nSELECT YOUR CHOICE\n");
+                scanf("%d",&ch);
+                switch(ch)
+                {
+                        case 1:
+                                push();
+                                break;
+                        case 2:
+                                pop();
+                                break;
+                        case 3:
+                                peak();
+                                break;
+                        case 4:
+                                display();
+                                break;
+                        case 5:
+                                a=1;
+                                break;
+                        default:
+                                printf("\nWARNING INVALID CHOICE!! TRY AGAIN\n");
+                                break;
+                }
+        }
+}
+        
+
+
+
+
+
+
+BFS
+
+
+#include<stdio.h>
+#include<stdlib.h>
+
+
+struct queue
+{
+        int size;
+        int f;
+        int r;
+        int*arr;
+};
+
+
+int isFull(struct queue*q)
+{
+        if(q->r==q->size-1)
+        {
+                return 1;
+        }
+        return 0;
+}
+
+
+int isEmpty(struct queue*q)
+{
+        if(q->r==q->f)
+        {
+                return 1;
+        }
+        return 0;
+}
+
+
+void enQueue(struct queue*q,int val)
+{
+        if(isFull(q))
+        {
+                printf("\nOverflow");
+        }
+        else
+        {
+                q->r++;
+                q->arr[q->r]=val;
+                printf("\nEnqueue %d\n",val);
+        }
+}
+
+
+int deQueue(struct queue*q)
+{
+        int a;
+        if(isEmpty(q))
+        {
+                printf("\nQueue is empty");
+        }
+        else
+        {
+                q->f++;
+                a=q->arr[q->f];
+        }
+        return a;
+}
+
+
+int main()
+{
+        struct queue q;
+        q.size=25;
+        q.f=q.r=-1;
+        q.arr=(int *)malloc(q.size*sizeof(int));
+        
+        int u;
+        int i=0;
+        
+        int visited[7]={0,0,0,0,0,0,0};
+        
+        int a[7][7]=
+        {
+                {0,1,1,1,0,0,0},
+                {1,0,1,0,0,0,0},
+                {1,1,0,1,1,0,0},
+                {1,0,1,0,1,0,0},
+                {0,0,1,1,0,1,1},
+                {0,0,0,0,1,0,0},
+                {0,0,0,0,1,0,0}        };
+                
+        
+        printf("%d ",i);
+        visited[i]=1;
+        
+        enQueue(&q,i);
+        while(!isEmpty(&q))
+        {
+                int u = deQueue(&q);
+                for(int j=0;j<7;j++)
+                {
+                        if(a[u][j]==1&&visited[j]==0)
+                        {
+                                printf("%d ",j);
+                                visited[j]=1;
+                                //enQueue(&q,j);
+                        }
+                }
+        }
+        
+        return 0;
+}
+
+
+
+
+SSLL
+
+
+#include<stdio.h>
+#include<stdlib.h>
+
+
+
+
+struct Node
+{
+    int data;
+    struct Node *link;
+}*top = NULL;
+
+
+
+
+void push(int x)
+{
+    struct Node *temp;
+    temp = malloc(sizeof(struct Node));
+
+
+    temp->data = x;
+
+
+    if(top == NULL)
+    {
+        temp->link = NULL;
+        top = temp;
+    }
+    else
+    {
+        temp->link = top;
+        top = temp;
+    }
+    printf("\nValue Inserted Successully");
+}
+
+
+
+
+void pop()
+{
+    struct Node *p;
+
+
+    if(top == NULL)
+    {
+        printf("\nStack Is Empty");
+        return;
+    }
+    
+    p = top;
+    top = top->link;
+    free(p);
+
+
+    printf("\nValue Deleted Successully:");
+}
+
+
+
+
+void peek()
+{
+    if(top == NULL)
+        {
+                printf("\nStack Is Empty");
+        }
+        else
+        {
+                printf("\nThe Peek Value In Stack Is %d",top->data);
+        }
+}
+
+
+
+
+void display()
+{
+    struct Node *p;
+
+
+    if(top == NULL)
+        {
+                printf("\nStack Is Empty");
+        }
+    else
+        {
+                 p = top;
+                 
+                 printf("\nValue From Stack2");
+                 
+                 while(p != NULL)
+                 {
+                         printf("\n%d",p->data);
+                         p = p->link;
+                 }
+         }
+}
+
+
+
+
+void main()
+{
+        int ch, x;
+        while(1)
+        {
+                printf("\nStack Using Linked List Operations:");
+                printf("\n1.Push");
+                printf("\n2.Pop");
+                printf("\n3.Peek");
+                printf("\n4.Display");
+                printf("\n5.Quit");
+
+
+                printf("\nEnter Your Choice:");
+                scanf("%d",&ch);
+
+
+                switch(ch)
+                {
+                        case 1:
+                printf("\nEnter Any Value:");
+                                scanf("%d", &x);
+
+
+                                push(x);
+                                break;
+
+
+                        case 2:
+                                pop();
+                                break;
+                        case 3:
+
+
+                                peek();
+                                break;
+
+
+                        case 4:
+                                display();
+                                break;
+
+
+                        case 5:
+                                exit(0);
+
+
+                        default:
+                                printf("\nWARNING INVALID CHOICE!! TRY AGAIN\n");
+                                break;
+                }
+        }
+}
+        
+
+
+SLL
+
+
+#include<stdio.h>
+#include<stdlib.h>
+
+
+struct Node
+{
+        int data;
+        struct Node *link;
+}*f = NULL;
+
+
+
+
+void createList()
+{
+        int n, x;
+        struct Node *temp, *q;
+        
+        printf("\nEnter No. Of Elements:");
+        scanf("%d",&n);
+        
+        for(int i=1 ; i<=n ; i++)
+        {
+                printf("\nEnter A Value:");
+                scanf("%d",&x);
+                
+                temp = malloc(sizeof(struct Node));
+                
+                temp->data = x;
+                temp->link = NULL;
+                
+                if(f == NULL)
+                        f=temp;
+                else 
+                {
+                        q=f;
+                        while(q->link != NULL)
+                        {
+                                q = q->link;
+                                q->link = temp;
+                        }
+                }
+        }
+        printf("\nLinked List Of %d Of Nodes Created Successfully", n);
+}
+
+
+
+
+void addBegin(int x)
+{
+        struct Node *temp;
+        
+        temp = malloc(sizeof(struct Node));
+        
+        temp->data = x;
+        temp->link = NULL;
+        
+        if(f == NULL)
+                f = temp;
+        else
+        {
+                temp->link = f;
+                f = temp;
+        }
+}
+
+
+
+
+void insertPosition(int x, int p)
+{
+        struct Node *temp, *q;
+        q = f;
+        
+        for(int i=1 ; i<p-1 ; i++)
+        {
+                if(q = NULL)
+                {
+                        printf("\nINVALID CHOICE!!");
+                        return;
+                }
+                q = q->link;
+        }
+        
+        if(q != NULL)
+        {
+                temp = malloc(sizeof(struct Node));
+                temp->data = x;
+                temp->link = q->link;
+                q->link = temp;
+                
+                printf("\nValue Inserted Successfully");
+        }
+        else
+        {
+                printf("\nINVALID POSITION!!");
+        }
+        
+}
+
+
+
+
+void reverseList()
+{
+
+
+        struct Node *p, *c, *n;
+        p = NULL;
+        c = f;
+        n = NULL;
+        
+        while(c != NULL)
+        {
+                n = c->link;
+                c->link = p;
+                p = c;
+                c = n;
+        }
+        
+        f = p;
+        
+
+
+}
+
+
+           
+           
+           
+           
+           
+           
+void deleteNode(int x)
+{
+        struct Node *p, *q;
+        
+        if(f == NULL)
+        {
+                printf("\nLinked List Does Not Exist");
+        }
+        
+        f = q;
+        
+        while(q != NULL)
+        {
+                if(q->data != x)
+                {
+                        f = q;
+                        q = q->link;
+                }
+                else
+                {
+                        if(q == f)
+                        {
+                                f = f->link;
+                                q->link = NULL;
+                        }
+                        else if(q->link == NULL)
+                        {
+                                p->link = NULL;
+                        }
+                        else 
+                        {
+                                p->link = q->link;
+                                q->link = NULL;
+                        }
+                        
+                        free(q);
+                        
+                        printf("\nValue Deleted Successfully");
+                        return ;
+                }
+        }
+        
+        printf("\nVAlue Does Not Exist");
+}
+
+
+
+
+void display()
+{
+        struct Node *q;
+        
+        if(f == NULL)
+                printf("\nLinked List Does Not Exist");
+        else
+        {
+                 q = f;
+                 
+                 printf("\nValue From Linked List");
+                 
+                 while(q != NULL)
+                 {
+                         printf("\t%d",q->data);
+                         q = q->link;
+                 }
+         }
+}
+
+
+
+
+void main()
+{
+        int ch, x, p, a=0;
+
+
+        
+        while(a==0)
+        {
+                printf("\nLinked List Operations:");
+                printf("\n1. Create List");
+                printf("\n2. Add At Beginning");
+                printf("\n3. Add At Any Position");
+                printf("\n4. Delete Any Node");
+                printf("\n5. Reverse A List");
+                printf("\n6. Display Node");
+                printf("\n7. Quit");
+                
+                printf("\nEnter Any Choice:");
+                scanf("%d",&ch);
+                
+                switch(ch)
+                {
+                        case 1:
+                                createList();
+                                break;
+                        
+                        case 2:
+                                printf("\nEnter Any Value:");
+                                scanf("%d", &x);
+                                
+                                addBegin(x);
+                                break;
+                        
+                        case 3:
+                                printf("\nEnter Any Number:");
+                                scanf("%d", &x);
+                                
+                                printf("\nEnter The Position:");
+                                scanf("%d", &p);
+                                
+                                insertPosition(x , p);
+                                break;
+                        
+                        case 4:
+                                printf("\nEnter Any No. Which Has To Be Deleted");
+                                scanf("%d", &x);
+                                
+                                deleteNode(x);
+                                break;
+                        
+                        case 5:
+                                reverseList();
+                                break;
+                        
+                        case 6:
+                                display();
+                                break;
+                        
+                        case 7: 
+                                a=1;
+                                
+                        default :
+                                printf("\nWARNING !! INVALID CHOICE!!");
+                        
+                }
+        }
+}
+
+
+                
+
+
+SELECTION SORT
+
+
+#include<stdio.h>
+
+
+void printArray(int arr[],int n);
+void selectionSort(int arr[],int n);
+
+
+int main()
+{
+    int arr[] = {64,25,12,22,11};
+
+
+    int n = sizeof(arr)/sizeof(arr[0]);
+
+
+    printf("\nOriginal Array : \n");
+    printArray(arr,n);
+
+
+    selectionSort(arr,n);
+
+
+    printf("\nSorted Array : \n");
+    printArray(arr,n);
+
+
+    return 0;
+}
+
+
+void printArray(int arr[],int n)
+{
+    for(int i = 0; i < n;i++)
+    {
+        printf("%d ",arr[i]);
+    }
+    printf("\n");
+}
+
+
+void selectionSort(int arr[],int n)
+{
+    for(int i = 0 ;i<n-1;i++)
+    {
+        int min_idx=i;
+
+
+        for(int j=i+1;j<n;j++)
+        {
+            if(arr[j]<arr[min_idx])
+            {
+                min_idx=j;
+            }
+        }
+        if(min_idx!=i)
+        {
+            int temp = arr[i];
+            arr[i] = arr[min_idx];
+            arr[min_idx] = temp;
+        }
+     }
+}
+    
+
+
+QUEUE
+
+
+#include<stdio.h>
+#include<stdlib.h>
+#include<stdbool.h>
+
+
+int queue[5];
+int f = -1, r = -1;
+
+
+bool isEmpty()
+{
+    if(f == -1 && r == -1)
+    {
+        return true;
+    }
+    return false;
+}
+
+
+bool isFull()
+{
+    if(r == 4)
+    {
+        return true;
+    }
+    return false;
+}
+
+
+void enQueue(int x)
+{
+    if(isFull())
+    {
+        printf("\nQueue Is Full");
+        return;
+    }
+    else if(isEmpty())
+    {
+        f = r = 0;
+    }
+    else
+    {
+        r++;
+    }
+    queue[r] = x;
+
+
+    printf("\nValue Inserted Successfully\n");
+}
+
+
+void deQueue()
+{
+    int x;
+
+
+    if(isEmpty())
+    {
+        printf("\nQueue Is Empty");
+        return ;
+    }
+    else
+    {
+        x = queue[f];
+
+
+        if(f == r)
+        {
+            f = r = -1;
+        }
+        else
+        {
+            f++;
+        }
+
+
+        printf("\nValue Deleted Successfully\n");
+    }
+}
+
+
+void front()
+{
+    if(isEmpty())
+    {
+        printf("\nQueue Is Empty");
+    }
+    else
+    {
+        printf("\nFront Value Is %d\n", queue[f]);
+    }
+}
+
+
+void display()
+{
+    if(isEmpty())
+    {
+        printf("\nQueue Is Empty");
+        return;
+    }
+    else
+    {
+        printf("\nDisplaying The Values Present In Queue:\n");
+        for(int i = f; i <= r; i++)
+        {
+            printf("%d\t", queue[i]);
+        }
+        printf("\n");
+    }
+}
+
+
+int main()
+{
+    int ch, x;
+    while(1)
+    {
+        printf("\nQUEUE OPERATIONS\n");
+        printf("1.ENQUEUE\n");
+        printf("2.DEQUEUE\n");
+        printf("3.FRONT\n");
+        printf("4.DISPLAY\n");
+        printf("5.EXIT\n");
+        printf("\nSELECT YOUR CHOICE\n");
+        scanf("%d", &ch);
+        switch(ch)
+        {
+            case 1:
+                printf("\nEnter A Value:\n");
+                scanf("%d", &x);
+                enQueue(x);
+                break;
+
+
+            case 2:
+                deQueue();
+                break;
+
+
+            case 3:
+                front();
+                break;
+
+
+            case 4:
+                display();
+                break;
+
+
+            case 5:
+                exit(0);
+
+
+            default:
+                printf("\nWARNING INVALID CHOICE!! TRY AGAIN\n");
+                break;
+        }
+    }
+    return 0;
+}
+
+
+QSLL
+
+
+#include<stdio.h>
+#include<stdlib.h>
+
+
+
+
+struct Node 
+{
+    int data;
+    struct Node *link;
+}*f = NULL, *r = NULL;
+
+
+
+
+void enqueue(int x)
+{
+    struct Node *temp;
+    temp = malloc(sizeof(struct Node));
+
+
+    temp->data = x;
+    temp->link = NULL;
+
+
+    if(f == NULL)
+    {
+       f = r = temp; 
+    }
+    else
+    {
+        r->link = temp;
+        r = r->link;
+    }
+    printf("\nValue Inserted Successfully");
+}
+
+
+void dequeue()
+{
+    struct Node *temp;
+
+
+    if(f == NULL)
+    {
+        printf("\nQueue Is Empty");
+        return;
+    }
+    
+    if(f == r)
+    {
+        f = r = temp;
+        f = r = NULL;
+        free(temp);
+    }
+    else
+    {
+        temp = f;
+        f = f->link;
+        free(temp);
+    }
+    printf("\nValue Deleted Successfully");
+}
+
+
+void display()
+{
+    struct Node *p;
+
+
+    if(f == NULL)
+        {
+                printf("\nQueue Is Empty");
+        }
+    else
+        {
+                 p = f;
+                 
+                 printf("\nValue From Queue");
+                 
+                 while(p != NULL)
+                 {
+                         printf("\t%d",p->data);
+                         p = p->link;
+                 }
+         }
+}
+
+
+
+
+void main()
+{
+        int ch, x;
+        while(1)
+        {
+                printf("\nQueue Using Linked List Operations:");
+                printf("\n1.Enqueue");
+                printf("\n2.Dequeue");
+                printf("\n3.Display");
+                printf("\n4.Quit");
+
+
+                printf("\nEnter Your Choice:");
+                scanf("%d",&ch);
+
+
+                switch(ch)
+                {
+                        case 1:
+                printf("\nEnter Any Value:");
+                                scanf("%d", &x);
+
+
+                                enqueue(x);
+                                break;
+
+
+                        case 2:
+                                dequeue();
+                                break;
+
+
+            case 3:
+                                display();
+                                break;
+
+
+                        case 4:
+                                exit(0);
+                                break;
+
+
+                        default:
+                                printf("\nWARNING INVALID CHOICE!! TRY AGAIN\n");
+                                break;
+                }
+        }
+}
+        
+
+
+MERGE SORT
+
+
+#include <stdio.h>
+#include <stdlib.h>
+
+
+void mergeSort(int arr[], int l, int r);
+void merge(int arr[], int l, int m, int r);
+void printArray(int arr[], int arr_size);
+
+
+int main() 
+{
+    int arr[] = {12, 11, 13, 5, 6, 7};
+    int arr_size = sizeof(arr) / sizeof(arr[0]);
+
+
+    printf("\nGiven Array is \n");
+    printArray(arr, arr_size);
+
+
+    mergeSort(arr, 0, arr_size - 1);
+
+
+    printf("\nSorted array \n");
+    printArray(arr, arr_size);
+
+
+    return 0;
+}
+
+
+void printArray(int arr[], int arr_size) 
+{
+    for (int i = 0; i < arr_size; i++) 
+    {
+        printf("%d ", arr[i]);
+    }
+    printf("\n");
+}
+
+
+void mergeSort(int arr[], int l, int r) 
+{
+    if (l < r) 
+    {
+        int m = l + (r - l) / 2; // Corrected to calculate the middle index
+
+
+        // Sort first and second halves
+        mergeSort(arr, l, m);
+        mergeSort(arr, m + 1, r);
+        merge(arr, l, m, r);
+    }
+}
+
+
+void merge(int arr[], int l, int m, int r) 
+{
+    int i, j, k;
+
+
+    int n1 = m - l + 1; // Size of left sub-array
+    int n2 = r - m;     // Size of right sub-array
+
+
+    // Create temporary arrays
+    int* L = (int*)malloc(n1 * sizeof(int));
+    int* R = (int*)malloc(n2 * sizeof(int));
+
+
+    // Copy data to temporary arrays L[] and R[]
+    for (i = 0; i < n1; i++)
+        L[i] = arr[l + i];
+    for (j = 0; j < n2; j++)
+        R[j] = arr[m + 1 + j];
+
+
+    // Merge the temporary arrays back into arr[l..r]
+    i = 0; // Initial index of the first sub-array
+    j = 0; // Initial index of the second sub-array
+    k = l; // Initial index of merged sub-array
+
+
+    while (i < n1 && j < n2) 
+    {
+        if (L[i] <= R[j]) 
+        {
+            arr[k] = L[i];
+            i++;
+        } 
+        else 
+        {
+            arr[k] = R[j];
+            j++;
+        }
+        k++;
+    }
+
+
+    // Copy the remaining elements of L[], if there are any
+    while (i < n1) 
+    {
+        arr[k] = L[i];
+        i++;
+        k++;
+    }
+
+
+    // Copy the remaining elements of R[], if there are any
+    while (j < n2)
+    {
+        arr[k] = R[j];
+        j++;
+        k++;
+    }
+
+
+    // Free the temporary arrays
+    free(L);
+    free(R);
+    free(R);
+}
+
+
+12P
+
+
+#include<stdio.h>
+#include<string.h>
+#include<math.h>
+
+
+char infix[20] , postfix[20] ;
+int stk[20];
+int top=-1;
+
+
+
+
+void push(char x)
+{
+        stk[++top]=x;        
+}
+
+
+
+
+int pop()
+{
+        return (stk[top--]);        
+}
+
+
+
+
+int precedence(char x)
+{
+        if(x=='^')
+                return 3;
+        if(x=='*'||x=='/'||x=='%')
+                return 2;
+        if(x=='+'||x=='-')
+                return 1;
+        if(x=='('||x==')')
+                return 0;
+}
+
+
+
+
+void infixPostfix()
+{
+        int i, j, len;
+        char symbol, next;
+        
+        len = strlen(infix);
+        
+        j = 0;
+        for(i=0;i<len;i++)
+        {
+                symbol = infix[i];
+                if(symbol!=' ')
+                {
+                        switch(symbol)
+                        {
+                                case '(':
+                                        push(symbol);
+                                        break;
+                                        
+                                case ')':
+                                        while((next = pop()) != '(')
+                                        {
+                                                postfix[j++] = next;
+                                        }
+                                        break;
+                                
+                                case '^':
+                                        
+                                case '*':
+                                        
+                                case '/':
+                                        
+                                case '%':
+                                        
+                                case '+':
+                                        
+                                case '-':
+                                        while((top != -1) && (precedence(stk[top]) >= precedence(symbol)))
+                                        {
+                                                postfix[j++] = pop();
+                                        }
+                                        push(symbol);
+                                        break;
+                                        
+                                default:
+                                        postfix[j++]=symbol;
+                        }        
+                }
+        }
+        
+        while(top != -1)
+        {
+                postfix[j++] = pop();
+        }
+        postfix[j] = '\0';
+
+
+}
+
+
+
+
+int evalPostfix()
+{
+        int i, a, b, len, res; 
+        char symbol;
+
+
+        len = strlen(postfix);
+        for(i = 0; i < len; i++)
+        {
+                symbol = postfix[i];
+
+
+                if((symbol >= '0') && (symbol <= '9'))
+                {
+                        push(symbol - '0');
+                }
+                else
+                {
+                        a=pop();
+                        b=pop();
+                        if(symbol == '^')
+                                push(pow(b,a));
+
+
+                        if(symbol == '*')
+                                push(b*a);
+
+
+                        if(symbol == '/')
+                                push(b/a);
+          
+                    if(symbol == '%')
+                                push(b%a);
+
+
+                        if(symbol == '+')
+                                push(b+a);
+          
+                    if(symbol == '-')
+                                push(b-a);
+
+
+                }
+        }
+
+
+        res = pop();
+
+
+        return res;
+
+
+}
+
+
+
+
+void main()
+{
+        printf("\nEnter Any Expression:");
+        scanf("%s",infix);
+        
+        infixPostfix();
+
+
+        printf("\nPostfix Expression Is :");
+        puts(postfix);
+        
+        int exp = evalPostfix();
+        
+        printf("\nResult Of Expression = %d",exp);
+        
+        
+}
+
+
+DLL
+
+
+#include<stdio.h>
+#include<stdlib.h>
+
+
+struct Node
+{
+    struct Node *prev;
+    int data;
+    struct Node *next;
+}*head = NULL;
+
+
+void createDLL()
+{
+    int x, n;
+    struct Node *temp1, *temp2;
+
+
+    printf("\nEnter No. Of Nodes:");
+        scanf("%d",&n);
+
+
+    for(int i=1; i<=n ; i++)
+        {
+                printf("\nEnter A Value:");
+                scanf("%d",&x);
+                
+                temp1 = malloc(sizeof(struct Node));
+                temp1->data = x;
+                
+                if(head == NULL)
+                {
+            temp1->prev = NULL;
+            temp1->next = NULL;
+                        head = temp1;
+                }
+                else 
+                {
+                        temp2 = head;
+
+
+            while(temp2->next != NULL)
+            {
+                temp2 = temp2->next;
+            }
+
+
+            temp2->next = temp1;
+            temp1->prev = temp2;
+            temp1->next = NULL;
+
+
+                }
+        }
+        printf("\nDoubly Linked List Created Successfully\n");
+
+
+}
+
+
+
+
+void addBgDLL(int x)
+{
+    struct Node *temp;
+        
+        temp = malloc(sizeof(struct Node));
+        temp->data = x;
+    temp->prev = NULL;
+
+
+    if(head == NULL)
+        {
+                temp->next = NULL;
+        head = temp;
+        }
+    else
+        {
+                temp->next = head;
+        head->prev = temp;
+        head = temp;
+        }
+        printf("\nValue Added Successfully\n");
+}
+
+
+
+
+void addEndDLL(int x)
+{
+    struct Node *temp1, *temp2;
+        
+        temp1 = malloc(sizeof(struct Node));
+        temp1->data = x;
+    temp1->next = NULL;
+
+
+    if(head == NULL)
+        {
+                temp1->prev = NULL;
+        head = temp1;
+        }
+    else
+        {
+                temp2 = head;
+
+
+                while(temp2->next != NULL)
+                {
+                        temp2 = temp2->next;
+                }
+
+
+                temp2->next = temp1;
+                temp1->prev = temp2;
+        }
+        printf("\nValue Added Successfully\n");
+}
+
+
+
+
+void addAfterNode(int x, int num)
+{
+    struct Node *temp1, *temp2;
+        
+        temp1 = malloc(sizeof(struct Node));
+        temp1->data = x;
+    temp1->next = NULL;
+
+
+        temp2 = head;
+
+
+    while(temp2->data != num)
+        {
+                temp2 = temp2->next;
+        }
+
+
+        temp1->next = temp2->next;
+        temp2->next->prev = temp1;
+        temp2->next = temp1;
+        temp1->prev = temp2;
+
+
+        printf("\nValue Added Successfully\n");
+}
+
+
+
+
+void deleteBgDLL()
+{
+        struct Node *temp;
+
+
+        if(head == NULL)
+        {
+                printf("\nDoubly Linked List Does Not Exist\n");
+                return;
+        }
+        else
+        {
+                temp = head;
+                head = head->next;
+                head->prev = NULL;
+                free(temp);
+        }
+
+
+        printf("\nValue Deleted Successfully");
+}
+
+
+
+
+void deleteEndDLL()
+{
+        struct Node *temp;
+
+
+        if(head == NULL)
+        {
+                printf("\nDoubly Linked List Does Not Exist\n");
+                return;
+        }
+
+
+        if(head->next == NULL)
+        {
+                free(head);
+                head = NULL;
+        }
+        else
+        {
+                temp = head;
+
+
+                while(temp->next != NULL)
+                {
+                        temp = temp->next;
+                }
+
+
+                temp->prev->next = NULL;
+                free(temp);
+        }
+
+
+        printf("\nValue Deleted Successfully");
+}
+
+
+
+
+void deleteAfterNode(int num)
+{
+        struct Node *temp1, *temp2;
+
+
+        if(head == NULL)
+        {
+                printf("\nDoubly Linked List Does Not Exist\n");
+                return;
+        }
+
+
+        temp1 = temp2 = head;
+
+
+        while(temp2->data != num)
+        {
+                temp2 = temp2->next;
+        }
+
+
+        temp1 = temp2->next;
+        temp2->next = temp1->next;
+        temp2->next->prev = temp2;
+        free(temp1);
+
+
+        printf("\nValue Deleted Successfully");
+}
+
+
+void display()
+{
+        struct Node *q;
+        
+        if(head == NULL)
+        {
+                printf("\nDoubly Linked List Does Not Exist");
+                return;
+        }
+        
+        printf("\nValue From Doubly Linked List:");
+        
+        q = head;
+        
+        do
+        {
+                printf("\n%d",q->data);
+                q = q->next;
+        }
+        while(q != NULL);
+}
+
+
+
+
+void main()
+{
+        int ch, x, num;
+
+
+        
+        while(1)
+        {
+                printf("\nDoubly Linked List Operations:");
+                printf("\n1. Create A List");
+                printf("\n2. Add At Beginning");
+                printf("\n3. Add At End");
+        printf("\n4. Add After A Node");
+                printf("\n5. Delete From Beginning");
+                printf("\n6. Delete From End");
+        printf("\n7. Delete After A Node");
+                printf("\n8. Display Node");
+                printf("\n9. Quit");
+                
+                printf("\nEnter Any Choice:");
+                scanf("%d",&ch);
+                
+                switch(ch)
+                {
+                        case 1:
+                                createDLL();
+                                break;
+                        
+                        case 2:
+                                printf("\nEnter Any Value:");
+                                scanf("%d", &x);
+                                
+                                addBgDLL(x);
+                                break;
+                        
+                        case 3:
+                                printf("\nEnter Any Value:");
+                                scanf("%d", &x);
+                                
+                                addEndDLL(x);
+                                break;
+                        
+                        case 4:
+                                printf("\nEnter Any Value:");
+                                scanf("%d", &x);
+
+
+                                printf("\nAdd After Which Node:");
+                                scanf("%d", &num);
+                                
+                                addAfterNode(x, num);
+                                break;
+                                
+                        case 5:
+                                deleteBgDLL();
+                                break;
+
+
+                        case 6:
+                                deleteEndDLL();
+                                break;
+
+
+                        case 7:
+                                printf("\nDelete After Which Node:");
+                                scanf("%d", &num);
+
+
+                                deleteAfterNode(num);
+                                break;
+
+
+                        case 8:
+                                display();
+                                break;
+                                
+                        case 9:
+                                exit(0);
+                                
+                        default :
+                                printf("\nWARNING !! INVALID CHOICE!!");
+                        
+                }
+        }
+}
+
+
+
+
+DFS
+
+
+#include<stdio.h>
+
+
+int A[7][7]
+=        {{0,1,1,1,1,0,0,},
+           {1,0,1,0,0,0,0},
+           {1,1,0,1,1,0,0},
+           {1,0,1,0,1,0,0},
+           {0,0,1,1,0,1,1},
+           {0,0,0,0,1,0,0},
+           {0,0,0,0,1,0,0}};
+           
+int visited[7]={0,0,0,0,0,0,0};
+
+
+void DFS(int i)
+{
+                
+        printf("%d\n",i);
+        visited[i]=1;
+        
+        for(int j=0;j<7;j++)
+        {
+                if(A[i][j]==1&&!visited[j])
+                {
+                        DFS(j);
+                }
+        }
+}
+
+
+int main()
+{
+        printf("\nValues DFS\n");
+        DFS(0);
+        return 0;
+}
+
+
+
+
+
+
+CLL
+
+
+#include<stdio.h>
+#include<stdlib.h>
+
+
+
+
+struct Node
+{
+        int data;
+        struct Node *link;
+}*last = NULL;
+
+
+
+
+void createCLL()
+{
+        int x, n;
+        struct Node *temp;
+        
+        printf("\nEnter No. Of Elements:");
+        scanf("%d",&n);
+        
+        for(int i=1; i<=n ; i++)
+        {
+                printf("\nEnter A Value:");
+                scanf("%d",&x);
+                
+                temp = malloc(sizeof(struct Node));
+                temp->data = x;
+                
+                if(last == NULL)
+                {
+                        last = temp;
+                        last->link = last;
+                }
+                else 
+                {
+                        temp->link = last->link;
+                        last->link = temp;
+                        last = temp;
+                }
+        }
+        printf("\nLinked List Created Successfully");
+}
+
+
+void addBgCLL(int x)
+{
+        struct Node *temp;
+        
+        temp = malloc(sizeof(struct Node));
+        temp->data = x;
+        
+        if(last == NULL)
+        {
+                last = temp;
+                last->link = last;
+        }
+        else
+        {
+                temp->link = last->link;
+                last->link = temp;
+        }
+        printf("\nValue Added Successfully");
+}
+
+
+void addEndCLL(int x)
+{
+        struct Node *temp;
+        
+        temp = malloc(sizeof(struct Node));
+        temp->data = x;
+        
+        if(last == NULL)
+        {
+                last = temp;
+                last->link = last;
+        }
+        else
+        {
+                temp->link = last->link;
+                last->link = temp;
+                last = last->link;
+        }
+        printf("\nValue Added Successfully");
+}
+
+
+
+
+void deleteBgCLL()
+{        
+        struct Node *temp1 , *temp2;
+        
+        if(last == NULL)
+        {
+                printf("\nCircular Linked List Does Not Exist");
+                return;
+        }
+        if(last->link == last)
+        {
+                temp1 = last;
+                last = NULL;
+                free(temp1);
+        }
+        else
+        {
+                temp1 = last;
+                temp1 = temp1->link;
+                temp2 = temp1->link;
+                last->link = temp2;
+                free(temp1);
+                
+        }
+        printf("\nValue Deleted Successfully");
+}
+
+
+void deleteEndCLL()
+{        
+        struct Node *temp1 , *temp2;
+        
+        if(last == NULL)
+        {
+                printf("\nCircular Linked List Does Not Exist");
+                return;
+        }
+        if(last->link == last)
+        {
+                temp1 = last;
+                last = NULL;
+                free(temp1);
+        }
+        else
+        {
+                temp1 = temp2 = last;
+                temp1 = temp1->link;
+                
+                while(last->link != temp2)
+                {
+                        last = last->link;
+                }
+                last->link = temp1;
+                free(temp2);
+
+
+        }
+        printf("\nValue Deleted Successfully");
+}
+                
+                
+
+
+void display()
+{
+        struct Node *q;
+        
+        if(last == NULL)
+        {
+                printf("\nLinked List Does Not Exist");
+                return;
+        }
+        
+        printf("\nValue From Circular Linked List:");
+        
+        q = last->link;
+        
+        do
+        {
+                printf("\n%d",q->data);
+                q = q->link;
+        }
+        while(q != last->link);
+}
+
+
+void main()
+{
+        int ch, x;
+
+
+        
+        while(1)
+        {
+                printf("\nCircular Linked List Operations:");
+                printf("\n1. Create List");
+                printf("\n2. Add At Beginning");
+                printf("\n3. Add At End");
+                printf("\n4. Delete At Beginning");
+                printf("\n5. Delete At End");
+                printf("\n6. Display Node");
+                printf("\n7. Quit");
+                
+                printf("\nEnter Any Choice:");
+                scanf("%d",&ch);
+                
+                switch(ch)
+                {
+                        case 1:
+                                createCLL();
+                                break;
+                        
+                        case 2:
+                                printf("\nEnter Any Value:");
+                                scanf("%d", &x);
+                                
+                                addBgCLL(x);
+                                break;
+                        
+                        case 3:
+                                printf("\nEnter Any Value:");
+                                scanf("%d", &x);
+                                
+                                addEndCLL(x);
+                                break;
+                        
+                        case 4:
+                                deleteBgCLL();
+                                break;
+                                
+                        case 5:
+                                deleteEndCLL();
+                                break;
+                                
+                        case 6:
+                                display();
+                                break;
+                                
+                        case 7:
+                                exit(0);
+                                
+                        default :
+                                printf("\nWARNING !! INVALID CHOICE!!");
+                        
+                }
+        }
+}
